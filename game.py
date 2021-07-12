@@ -1,5 +1,4 @@
-
-import pygame, sys, random
+import pygame, sys, random ,json
 
 pygame.init()
 pygame.font.init()
@@ -24,6 +23,13 @@ DIM_GREY = (105,105,105)
 RED = (255,0,0)
 LIGHT_CYAN = (93,216,228)
 CYAN = (84,194,205)
+
+try:
+    with open('storage.txt','r') as storage_file:
+        data =  json.load(storage_file)
+        high_score = data['High score']
+except:
+        high_score = 0
 
 
 class Game(object):
@@ -54,10 +60,11 @@ class Game(object):
                     sys.exit()
 
 class Snake():
-    def __init__(self,position,color,head_color) -> None:
+    def __init__(self,position,color,head_color,high_score) -> None:
         self.head_position_0 = position
         self.head_color = head_color
         self.color = color
+        self.high_score = high_score
         self.length = 1
         self.direction = random.choice(DIRECTIONS)
         self.body_positions = [position]
@@ -103,9 +110,23 @@ class Snake():
         pygame.draw.rect(SURFACE, (93,216, 228), rect, 1)
 
     def draw_score(self):
+        self.update_scores()
         score_surface = SCORE_FONT.render(f'Score: {self.length-1}',True,BLACK)
-        score_rect = score_surface.get_rect(center = (WIDTH//2,1.5*SQ_SIZE[0]))
+        high_score_surface = SCORE_FONT.render(f'High score: {self.high_score}',True,BLACK)
+        score_rect = score_surface.get_rect(center = (WIDTH//2,3*SQ_SIZE[0]))
+        high_score_rect = high_score_surface.get_rect(center = (WIDTH//2,1.5*SQ_SIZE[0]))
+        
         SCREEN.blit(score_surface,score_rect)
+        SCREEN.blit(high_score_surface,high_score_rect)
+
+    def update_scores(self):
+        if self.length-1 > self.high_score:
+            self.high_score = self.length-1
+        data = {
+            'High score' : self.high_score
+        }
+        with open('storage.txt','w') as storage_file:
+            json.dump(data,storage_file)
         
 
     def get_head_position(self):
@@ -143,7 +164,7 @@ class Food(object):
         self.position = (self.sq_position[0]*SQ_SIZE[0],self.sq_position[1]*SQ_SIZE[1])
         
 game = Game(SCREEN,SURFACE,SIZE,SQ_NUM)
-snake = Snake(((SQ_NUM//2)*SQ_SIZE[0],(SQ_NUM//2)*SQ_SIZE[1]),DIM_GREY,BLACK)
+snake = Snake(((SQ_NUM//2)*SQ_SIZE[0],(SQ_NUM//2)*SQ_SIZE[1]),DIM_GREY,BLACK,high_score)
 food = Food()
 
 def main():

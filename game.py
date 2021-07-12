@@ -1,8 +1,6 @@
 
-from os import P_NOWAIT
 import pygame, sys, random
 
-from pygame import surface
 pygame.init()
 pygame.font.init()
 
@@ -24,6 +22,8 @@ pygame.display.set_caption('Snake Game')
 BLACK = (0,0,0)
 DIM_GREY = (105,105,105)
 RED = (255,0,0)
+LIGHT_CYAN = (93,216,228)
+CYAN = (84,194,205)
 
 
 class Game(object):
@@ -38,9 +38,9 @@ class Game(object):
         for row in range(self.sq_num):
             for column in range(self.sq_num):
                 if (row + column) % 2 == 0:
-                    self.create_square((93,216,228) ,(row,column))
+                    self.create_square(LIGHT_CYAN ,(row,column))
                 else:
-                    self.create_square((84,194,205) ,(row,column))
+                    self.create_square(CYAN ,(row,column))
 
     def create_square(self,color,coordinates):
         x,y = coordinates
@@ -81,7 +81,7 @@ class Snake():
     def turn(self,direction):
         x,y = direction
         if not (self.length > 1 and (x*-1,y*-1) ==  self.direction): #Prevents player from moving in opposite direction of the head
-            self.direction = direction
+            self.direction = direction #Changes direction
         
 
     def draw(self,count):

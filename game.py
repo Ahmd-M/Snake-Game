@@ -4,8 +4,6 @@ pygame.init()
 pygame.font.init()
 
 
-
-
 #Game constants (UI)
 SIZE = (WIDTH, HEIGHT) = 500, 500
 SCREEN = pygame.display.set_mode(SIZE)
@@ -79,7 +77,6 @@ class Snake():
         x,y = self.direction
         current_head_position = self.get_head_position()
         new_head_position = (current_head_position[0] + x*SQ_SIZE[0] ,current_head_position[1] + y*SQ_SIZE[1]) #Square after head (In same direction)
-
         if len(self.body_positions) > 3 and new_head_position in self.body_positions[2:]: #Snake collides its body
             self.reset() 
         elif not (0 <= new_head_position[0] < WIDTH) or not (0 <= new_head_position[1] < HEIGHT): #Out of screen
@@ -94,7 +91,6 @@ class Snake():
         if not (self.length > 1 and (x*-1, y*-1) ==  self.direction): #Prevents player from moving in opposite direction of the head
             self.direction = direction #Changes direction
         
-
     def draw(self, count):
         for position in self.body_positions:
             self.create_draw_rect(position, self.color)
@@ -131,7 +127,6 @@ class Snake():
         }
         with open('storage.txt', 'w') as storage_file:
             json.dump(data, storage_file)
-        
 
     def get_head_position(self):
         return self.body_positions[0]
@@ -151,6 +146,7 @@ class Snake():
                 elif event.key == pygame.K_RIGHT:
                     self.turn(RIGHT)
 
+
 class Food(object):
     def __init__(self) -> None:
         self.update_position()
@@ -167,29 +163,32 @@ class Food(object):
         self.sq_position = (random.randint(0, SQ_NUM-1), random.randint(0,SQ_NUM-1))
         self.position = (self.sq_position[0]*SQ_SIZE[0], self.sq_position[1]*SQ_SIZE[1])
         
-game = Game(SCREEN,SURFACE, SIZE,SQ_NUM)
+
+game = Game(SCREEN, SURFACE, SIZE,SQ_NUM)
 snake = Snake(((SQ_NUM//2)*SQ_SIZE[0], (SQ_NUM//2)*SQ_SIZE[1]), DIM_GREY, BLACK, high_score)
 food = Food()
 
+
 def main():
+
     clock = pygame.time.Clock()
     count = 0
 
     while True:
         count += 1
+
         game.draw()
         snake.draw(count)
         snake.draw_score()
         food.draw()
         snake.handle_keys()
+
         if food.position == snake.get_head_position():
             snake.length += 1
             food.update_position()
 
-
         pygame.display.update()
         clock.tick(FPS)
-
 
 if __name__ == "__main__":
     main()

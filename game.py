@@ -37,8 +37,8 @@ except:
 class Game(object):
     def __init__(self, screen, surface, screen_size, sq_num) -> None:
         self.screen = screen
-        self.surface = surface
         self.sq_num = sq_num
+        self.surface = surface
         self.sq_size = (screen_size[0]//self.sq_num, screen_size[1]//self.sq_num)
 
     def draw(self):
@@ -63,13 +63,13 @@ class Game(object):
 
 class Snake():
     def __init__(self, position, color, head_color, high_score) -> None:
-        self.head_position_0 = position
-        self.head_color = head_color
+        self.length = 1 
         self.color = color
-        self.high_score = high_score
-        self.length = 1
+        self.head_color = head_color
+        self.high_score = high_score 
+        self.head_position_0 = position
+        self.body_positions = [position] 
         self.direction = random.choice(DIRECTIONS)
-        self.body_positions = [position]
         
     def move(self,count):
         if count % 4 != 0:
@@ -150,7 +150,7 @@ class Snake():
 class Food(object):
     def __init__(self) -> None:
         self.update_position()
-        self.color = (255, 0, 0)
+        self.color = RED
 
     def draw(self):
         pygame.draw.rect(SURFACE, self.color, self.create(self.position))

@@ -55,12 +55,6 @@ class Game(object):
         square = pygame.Rect((x * self.sq_size[0], y * self.sq_size[1]), self.sq_size)
         pygame.draw.rect(self.surface, color, square)
 
-    def handle_events(self):
-        for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-
 class Snake():
     def __init__(self, position, color, head_color, high_score) -> None:
         self.length = 1 

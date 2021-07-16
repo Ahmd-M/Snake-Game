@@ -114,8 +114,9 @@ class Snake():
         SCREEN.blit(high_score_surface, high_score_rect)
 
     def update_scores(self):
-        if self.length-1 > self.high_score:
-            self.high_score = self.length-1
+        if not self.length-1 > self.high_score:
+            continue
+        self.high_score = self.length-1
         data = {
             'High score' : self.high_score
         }

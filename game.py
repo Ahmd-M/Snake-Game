@@ -114,14 +114,13 @@ class Snake():
         SCREEN.blit(high_score_surface, high_score_rect)
 
     def update_scores(self):
-        if not self.length-1 > self.high_score:
-            continue
-        self.high_score = self.length-1
-        data = {
-            'High score' : self.high_score
-        }
-        with open('storage.txt', 'w') as storage_file:
-            json.dump(data, storage_file)
+        if self.length-1 > self.high_score:
+            self.high_score = self.length-1
+            data = {
+                'High score' : self.high_score
+            }
+            with open('storage.txt', 'w') as storage_file:
+                json.dump(data, storage_file)
 
     def get_head_position(self):
         return self.body_positions[0]
